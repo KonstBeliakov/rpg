@@ -6,3 +6,9 @@ def collision(entity1: Entity, entity2: Entity):
             entity1.y < entity2.y + entity2.sizeY and entity2.y < entity1.y + entity1.sizeY:
         return True
     return False
+
+
+def dist(entity1: Entity, entity2: Entity):
+    x1, y1 = entity1.center
+    x2, y2 = entity2.center
+    return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5

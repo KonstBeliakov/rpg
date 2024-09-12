@@ -18,6 +18,8 @@ class Game:
         for entity in self.entities:
             entity.pos = (randrange(WIDTH), randrange(HEIGHT))
 
+        self.bullets = []
+
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -26,6 +28,10 @@ class Game:
 
         for entity in self.entities:
             entity.draw(self.screen)
+
+        for bullet in self.bullets:
+            bullet.update()
+            bullet.draw(self.screen)
 
         self.player.controls(self)
         self.player.update(self.entities)

@@ -15,8 +15,12 @@ class Entity:
         return self.x, self.y
 
     @pos.setter
-    def pos(self, new_pos):
-        self.x, self.y = new_pos
+    def pos(self, pos):
+        self.x, self.y = pos
+
+    @property
+    def center(self):
+        return self.x + self.sizeX // 2, self.y + self.sizeY // 2
 
     @property
     def size(self):
@@ -28,3 +32,6 @@ class Entity:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.sizeX, self.sizeY))
+
+    def update(self):
+        pass

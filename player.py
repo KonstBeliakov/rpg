@@ -1,12 +1,17 @@
 import pygame
+from math import sin, cos, atan2
+
+from bullet import Bullet
 from entity import Entity
-from utils import collision
+from utils import collision, dist
 
 
 class Player(Entity):
     def __init__(self):
         super().__init__()
         self.hp = 100
+
+        self.bulletSpeed = 300
 
         self.atacked = False
 
@@ -42,5 +47,11 @@ class Player(Entity):
             self.color = 'black'
 
     def atack(self, game):
-        pass
+        enemy = min(game.entities, key=lambda entity: dist(self, entity))
+        dx = self.center[0] - enemy.center[0]
+        dy = self.center[1] - enemy.center[1]
+        direction = atan2(dy, dx)
+        game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
+                                          -self.bulletSpeed * sin(direction)),
+                                   pos=self.center))
 
