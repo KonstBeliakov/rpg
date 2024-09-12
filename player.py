@@ -14,7 +14,7 @@ class Player(Entity):
     def alive(self):
         return self.hp > 0
 
-    def move(self):
+    def controls(self, game):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.x -= 5
@@ -24,6 +24,10 @@ class Player(Entity):
             self.y -= 5
         if keys[pygame.K_s]:
             self.y += 5
+
+        mouse_buttons = pygame.mouse.get_pressed()
+        if mouse_buttons[0] or mouse_buttons[1]:
+            self.atack(game)
 
     def update(self, entities: list[Entity]):
         self.atacked = False
@@ -36,3 +40,7 @@ class Player(Entity):
             self.color = 'red'
         else:
             self.color = 'black'
+
+    def atack(self, game):
+        pass
+
