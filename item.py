@@ -3,11 +3,10 @@ import enum
 import pygame
 
 
-class Items(enum.Enum):
-    GOLD_COIN = 1
-    SILVER_COIN = 2
-    COPPER_COIN = 3
-    BOW = 4
+GOLD_COIN = 1
+SILVER_COIN = 2
+COPPER_COIN = 3
+BOW = 4
 
 
 class ItemDescription:
@@ -24,22 +23,22 @@ class ItemDescription:
 
 
 ItemsInfo = {
-    Items.GOLD_COIN: ItemDescription(name='Gold Coin',
+    GOLD_COIN: ItemDescription(name='Gold Coin',
                                      description='The main currency for which you can buy upgrades and items',
                                      texturename='gold_coin.png',
                                      price=100
                                      ),
-    Items.SILVER_COIN: ItemDescription(name='Silver Coin',
+    SILVER_COIN: ItemDescription(name='Silver Coin',
                                      description='The main currency for which you can buy upgrades and items',
                                      texturename='silver_coin.png',
                                      price=10
                                      ),
-    Items.COPPER_COIN: ItemDescription(name='Copper Coin',
+    COPPER_COIN: ItemDescription(name='Copper Coin',
                                      description='The main currency for which you can buy upgrades and items',
                                      texturename='copper_coin.png',
                                      price=1
                                      ),
-    Items.BOW: ItemDescription(name='Bow',
+    BOW: ItemDescription(name='Bow',
                                      description='Regular bow with low fire rate and damage',
                                      texturename='bow.png',
                                      price=250,
@@ -51,7 +50,7 @@ ItemsInfo = {
 
 
 class Item:
-    def __init__(self, item=Items.COPPER_COIN, amount=5):
+    def __init__(self, item=COPPER_COIN, amount=5):
         self.type = item
         self.amount = amount
 

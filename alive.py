@@ -1,5 +1,6 @@
 import pygame
 
+from dropped_item import DroppedItem
 from utils import *
 
 
@@ -9,6 +10,7 @@ class Alive(Entity):
         self.max_hp = hp
         self.hp = hp
         self.team = team
+        self.drop = []
 
     @property
     def alive(self):
@@ -24,3 +26,7 @@ class Alive(Entity):
 
         health_color = (255 * (1 - (max(0, self.hp) / self.max_hp)), 255 * (max(0, self.hp) / self.max_hp), 0)
         pygame.draw.rect(screen, health_color,(self.x, self.y - 10, self.hp * hp_bar_size / self.max_hp, 5))
+
+    def drop_items(self, game):
+        for item in self.drop:
+            game.droped_items.append(DroppedItem(item, self.pos))

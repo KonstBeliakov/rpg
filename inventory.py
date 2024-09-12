@@ -1,7 +1,7 @@
 import pygame
 
 from entity import Entity
-from item import Item, Items, ItemsInfo
+from item import *
 from utils import *
 
 
@@ -48,9 +48,9 @@ class Inventory:
         self.slots = [Slot(inventory=self, number=i, pos=(10 + i*70, 10)) for i in range(10)]
         self.selected = 0
 
-        self.slots[0].item = Item(item=Items.BOW, amount=1)
-        self.slots[1].item = Item(item=Items.SILVER_COIN, amount=2)
-        self.slots[2].item = Item(item=Items.COPPER_COIN, amount=5)
+        self.slots[0].item = Item(item=BOW, amount=1)
+        self.slots[1].item = Item(item=SILVER_COIN, amount=2)
+        self.slots[2].item = Item(item=COPPER_COIN, amount=5)
 
     def __iter__(self):
         yield from self.slots

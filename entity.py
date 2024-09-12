@@ -7,6 +7,7 @@ class Entity:
         self.size = size
 
         self.color = 'black'
+        self.__texture = None
 
     @property
     def pos(self):
@@ -28,8 +29,19 @@ class Entity:
     def size(self, new_size):
         self.sizeX, self.sizeY = new_size
 
+    @property
+    def texture(self):
+        return self.__texture
+
+    @texture.setter
+    def texture(self, texture):
+        self.__texture = pygame.transform.scale(texture, self.size)
+
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.sizeX, self.sizeY))
+        if self.__texture is None:
+            pygame.draw.rect(screen, self.color, (self.x, self.y, self.sizeX, self.sizeY))
+        else:
+            screen.blit(self.__texture, self.pos)
 
     def update(self, game):
         pass
