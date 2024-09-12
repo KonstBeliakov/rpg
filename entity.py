@@ -33,5 +33,5 @@ class Entity:
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.sizeX, self.sizeY))
 
-    def update(self):
+    def update(self, game):
         pass

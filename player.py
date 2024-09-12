@@ -1,4 +1,5 @@
 import pygame
+from time import perf_counter
 from math import sin, cos, atan2
 
 from bullet import Bullet
@@ -12,8 +13,12 @@ class Player(Entity):
         self.hp = 100
 
         self.bulletSpeed = 300
+        self.atack_delay = 1.3
+        self.last_atacked = perf_counter()
 
         self.atacked = False
+
+        self.info_font = pygame.font.SysFont("Arial", 20)
 
     @property
     def alive(self):
@@ -34,11 +39,11 @@ class Player(Entity):
         if mouse_buttons[0] or mouse_buttons[1]:
             self.atack(game)
 
-    def update(self, entities: list[Entity]):
+    def update(self, game):
         self.atacked = False
-        for entity in entities:
+        for entity in game.entities:
             if collision(self, entity):
-                self.hp -= 5
+                self.hp -= 1
                 self.atacked = True
 
         if self.atacked:
@@ -47,11 +52,17 @@ class Player(Entity):
             self.color = 'black'
 
     def atack(self, game):
-        enemy = min(game.entities, key=lambda entity: dist(self, entity))
-        dx = self.center[0] - enemy.center[0]
-        dy = self.center[1] - enemy.center[1]
-        direction = atan2(dy, dx)
-        game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
-                                          -self.bulletSpeed * sin(direction)),
-                                   pos=self.center))
+        if perf_counter() - self.last_atacked > self.atack_delay:
+            enemy = min(game.entities, key=lambda entity: dist(self, entity))
+            dx = self.center[0] - enemy.center[0]
+            dy = self.center[1] - enemy.center[1]
+            direction = atan2(dy, dx)
+            game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
+                                              -self.bulletSpeed * sin(direction)),
+                                       pos=self.center))
+            self.last_atacked = perf_counter()
 
+    def draw(self, screen):
+        super().draw(screen)
+
+        screen.blit(self.info_font.render(f"Hp: {self.hp}", True, (0, 0, 0)), (10, 10))

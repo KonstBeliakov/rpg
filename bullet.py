@@ -18,7 +18,7 @@ class Bullet(Entity):
     def speed(self, speed):
         self.speedX, self.speedY = speed
 
-    def update(self):
+    def update(self, game):
         dt = perf_counter() - self.last_update
         self.x += self.speedX * dt
         self.y += self.speedY * dt

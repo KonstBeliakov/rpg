@@ -30,9 +30,12 @@ class Game:
             entity.draw(self.screen)
 
         for bullet in self.bullets:
-            bullet.update()
+            bullet.update(self)
             bullet.draw(self.screen)
 
         self.player.controls(self)
-        self.player.update(self.entities)
+        self.player.update(self)
         self.player.draw(self.screen)
+
+        if not self.player.alive:
+            self.over = True
