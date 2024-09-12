@@ -1,6 +1,9 @@
 import pygame
+from random import randrange
 
-from Player import Player
+
+from entity import Entity
+from player import Player
 
 pygame.init()
 
@@ -16,6 +19,9 @@ x, y = WIDTH // 2, HEIGHT // 2
 running = True
 
 player = Player()
+entities = [Entity() for _ in range(10)]
+for entity in entities:
+    entity.pos = (randrange(800), randrange(600))
 
 while running:
     for event in pygame.event.get():
@@ -23,7 +29,11 @@ while running:
             running = False
     screen.fill(WHITE)
 
+    for entity in entities:
+        entity.draw(screen)
+
     player.move()
+    player.update(entities)
     player.draw(screen)
 
     pygame.display.flip()
