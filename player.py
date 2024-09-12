@@ -12,7 +12,7 @@ class Player(Alive):
         super().__init__(hp=100)
 
         self.bulletSpeed = 300
-        self.atack_delay = 1.3
+        self.atack_delay = 0.7
         self.last_atacked = perf_counter()
 
         self.atacked = False
@@ -47,7 +47,7 @@ class Player(Alive):
             self.color = 'black'
 
     def atack(self, game):
-        if perf_counter() - self.last_atacked > self.atack_delay:
+        if perf_counter() - self.last_atacked > self.atack_delay and game.entities:
             enemy = min(game.entities, key=lambda entity: dist(self, entity))
             dx = self.center[0] - enemy.center[0]
             dy = self.center[1] - enemy.center[1]

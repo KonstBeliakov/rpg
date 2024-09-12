@@ -31,6 +31,6 @@ class Bullet(Entity):
 
         for entity in game.entities:
             if isinstance(entity, Alive) and collision(self, entity) and self.team != entity.team:
-                entity.hp -= 30
+                entity.hp -= 10
                 self.active = False
                 break
