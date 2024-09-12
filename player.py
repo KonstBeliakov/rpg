@@ -51,6 +51,11 @@ class Player(Alive):
         else:
             self.color = 'black'
 
+        for item in game.droped_items:
+            if collision(self, item):
+                self.inventory.add(item.item)
+                item.active = False
+
     def atack(self, game):
         if perf_counter() - self.last_atacked > self.atack_delay and game.entities:
             enemy = min(game.entities, key=lambda entity: dist(self, entity))

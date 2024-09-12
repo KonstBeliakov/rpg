@@ -51,6 +51,9 @@ class Item:
         self.type = item
         self.amount = amount
 
+    def __str__(self):
+        return f'{ItemsInfo[self.type].name} ({self.amount})'
+
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return self.type == other.type

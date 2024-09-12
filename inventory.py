@@ -30,8 +30,7 @@ class Slot(Entity):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 button_rect = pygame.Rect(self.pos, self.size)
                 if button_rect.collidepoint(event.pos):
-                    self.inventory.selected = self.number
-                    self.inventory.last_selected = perf_counter()
+                    self.inventory.select(self.number)
                     break
 
     def draw(self, screen):
@@ -48,9 +47,9 @@ class Slot(Entity):
 
 class Inventory:
     def __init__(self):
-        self.slots = [Slot(inventory=self, number=i, pos=(10 + i*70, WINDOW_HEIGHT - 80)) for i in range(10)]
+        self.slots = [Slot(inventory=self, number=i, pos=(10 + i * 70, WINDOW_HEIGHT - 80)) for i in range(10)]
         self.selected = 0
-        self.last_selected = perf_counter()
+        self.hints = []
 
         self.font_size = 20
         self.font = pygame.font.SysFont("Arial", self.font_size)
@@ -76,13 +75,32 @@ class Inventory:
         for slot in self:
             slot.update(game)
 
+    def add(self, item):
+        for slot in self.slots:
+            if slot.item == item:
+                slot.item.amount += item.amount
+                self.hints.append([str(slot.item), perf_counter()])
+                break
+        else:
+            for slot in self.slots:
+                if slot.empty:
+                    slot.item = item
+                    self.hints.append([str(slot.item), perf_counter()])
+                    break
+
+    def select(self, n):
+        self.selected = n
+        if not self[self.selected].empty:
+            self.hints.append([f'{ItemsInfo[self[self.selected].item.type].name} ({self[self.selected].item.amount})',
+                               perf_counter()])
+
     def draw(self, screen):
         for slot in self:
             slot.draw(screen)
 
-        text = f'{ItemsInfo[self[self.selected].item.type].name} ({self[self.selected].item.amount})'
-        text_surface = self.font.render(text, True, (0, 0, 0))
-        text_surface.set_alpha(int(max(0.0, (1 - (perf_counter() - self.last_selected))) * 255))
-        text_rect = text_surface.get_rect(center=(WINDOW_WIDTH // 2,
-                                                  WINDOW_HEIGHT - 120 - (perf_counter() - self.last_selected) * 15))
-        screen.blit(text_surface, text_rect)
+        for hint in self.hints:
+            text_surface = self.font.render(hint[0], True, (0, 0, 0))
+            text_surface.set_alpha(int(max(0.0, (1 - (perf_counter() - hint[1]))) * 255))
+            text_rect = text_surface.get_rect(center=(WINDOW_WIDTH // 2,
+                                                      WINDOW_HEIGHT - 120 - (perf_counter() - hint[1]) * 25))
+            screen.blit(text_surface, text_rect)
