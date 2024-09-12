@@ -1,3 +1,4 @@
+from itertools import chain
 from random import randrange
 
 from monsters import *
@@ -21,6 +22,12 @@ class Game:
         self.droped_items = []
         self.events = []
 
+    @staticmethod
+    def delete_not_active(lst: list[Entity]):
+        for i in range(len(lst) - 1, -1, -1):
+            if not lst[i].active:
+                del lst[i]
+
     def update(self):
         self.events = pygame.event.get()
         for event in self.events:
@@ -28,29 +35,17 @@ class Game:
                 self.over = True
         self.screen.fill((255, 255, 255))
 
-        for entity in self.entities:
+        for entity in chain(self.entities, self.bullets, self.droped_items):
+            entity.update(self)
             entity.draw(self.screen)
 
         for i in range(len(self.entities) - 1, -1, -1):
-            if isinstance(self.entities[i], Alive) and not self.entities[i].alive:
+            if not self.entities[i].active:
                 self.entities[i].drop_items(self)
                 del self.entities[i]
 
-        for bullet in self.bullets:
-            bullet.update(self)
-            bullet.draw(self.screen)
-
-        for i in range(len(self.bullets) - 1, -1, -1):
-            if not self.bullets[i].active:
-                del self.bullets[i]
-
-        for item in self.droped_items:
-            item.update(self)
-            item.draw(self.screen)
-
-        for i in range(len(self.droped_items) - 1, -1, -1):
-            if not self.droped_items[i].active:
-                del self.droped_items[i]
+        self.delete_not_active(self.bullets)
+        self.delete_not_active(self.droped_items)
 
         self.player.controls(self)
         self.player.update(self)

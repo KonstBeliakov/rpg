@@ -13,7 +13,6 @@ class Bullet(Entity):
         self.speed = speed
         self.team = team
         self.last_update = perf_counter()
-        self.active = True
 
     @property
     def speed(self):
@@ -31,6 +30,6 @@ class Bullet(Entity):
 
         for entity in game.entities:
             if isinstance(entity, Alive) and collision(self, entity) and self.team != entity.team:
-                entity.hp -= 10
+                entity.take_damege(10)
                 self.active = False
                 break

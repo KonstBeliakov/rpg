@@ -43,7 +43,7 @@ class Player(Alive):
         self.atacked = False
         for entity in game.entities:
             if collision(self, entity):
-                self.hp -= 1
+                self.take_damege(1)
                 self.atacked = True
 
         if self.atacked:

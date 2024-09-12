@@ -6,8 +6,18 @@ class Entity:
         self.pos = pos
         self.size = size
 
-        self.color = 'black'
+        self.color = (0, 0, 0)
+
+        self.__active = True
         self.__texture = None
+
+    @property
+    def active(self):
+        return self.__active
+
+    @active.setter
+    def active(self, active):
+        self.__active = active
 
     @property
     def pos(self):
@@ -39,7 +49,10 @@ class Entity:
 
     def draw(self, screen):
         if self.__texture is None:
-            pygame.draw.rect(screen, self.color, (self.x, self.y, self.sizeX, self.sizeY))
+            surface = pygame.Surface(self.size, pygame.SRCALPHA)
+            surface.fill(self.color)
+            screen.blit(surface, self.pos)
+
         else:
             screen.blit(self.__texture, self.pos)
 
