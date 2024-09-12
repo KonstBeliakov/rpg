@@ -1,7 +1,4 @@
-import enum
-
 import pygame
-
 
 GOLD_COIN = 1
 SILVER_COIN = 2

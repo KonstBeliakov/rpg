@@ -2,6 +2,8 @@ import enum
 
 from entity import Entity
 
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
+
 
 class Team(enum.Enum):
     PLAYER = 1

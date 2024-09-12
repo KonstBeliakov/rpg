@@ -5,19 +5,17 @@ from utils import *
 from alive import Alive
 from player import Player
 
-WIDTH, HEIGHT = 800, 600
-
 
 class Game:
     def __init__(self):
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
         self.over = False
 
         self.player = Player()
         self.entities = [Slime(50, team=Team.ENEMY) for _ in range(10)]
         for entity in self.entities:
-            entity.pos = (randrange(WIDTH), randrange(HEIGHT))
+            entity.pos = (randrange(WINDOW_WIDTH), randrange(WINDOW_HEIGHT))
 
         self.bullets = []
         self.droped_items = []

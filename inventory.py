@@ -1,3 +1,5 @@
+from time import perf_counter
+
 import pygame
 
 from entity import Entity
@@ -29,6 +31,7 @@ class Slot(Entity):
                 button_rect = pygame.Rect(self.pos, self.size)
                 if button_rect.collidepoint(event.pos):
                     self.inventory.selected = self.number
+                    self.inventory.last_selected = perf_counter()
                     break
 
     def draw(self, screen):
@@ -45,8 +48,12 @@ class Slot(Entity):
 
 class Inventory:
     def __init__(self):
-        self.slots = [Slot(inventory=self, number=i, pos=(10 + i*70, 10)) for i in range(10)]
+        self.slots = [Slot(inventory=self, number=i, pos=(10 + i*70, WINDOW_HEIGHT - 80)) for i in range(10)]
         self.selected = 0
+        self.last_selected = perf_counter()
+
+        self.font_size = 20
+        self.font = pygame.font.SysFont("Arial", self.font_size)
 
         self.slots[0].item = Item(item=BOW, amount=1)
         self.slots[1].item = Item(item=SILVER_COIN, amount=2)
@@ -72,3 +79,10 @@ class Inventory:
     def draw(self, screen):
         for slot in self:
             slot.draw(screen)
+
+        text = f'{ItemsInfo[self[self.selected].item.type].name} ({self[self.selected].item.amount})'
+        text_surface = self.font.render(text, True, (0, 0, 0))
+        text_surface.set_alpha(int(max(0.0, (1 - (perf_counter() - self.last_selected))) * 255))
+        text_rect = text_surface.get_rect(center=(WINDOW_WIDTH // 2,
+                                                  WINDOW_HEIGHT - 120 - (perf_counter() - self.last_selected) * 15))
+        screen.blit(text_surface, text_rect)
