@@ -2,11 +2,9 @@ import pygame
 
 
 class Entity:
-    def __init__(self, pos=(0, 0)):
+    def __init__(self, pos=(0, 0), size=(50, 50)):
         self.pos = pos
-
-        self.sizeX = 50
-        self.sizeY = 50
+        self.size = size
 
         self.color = 'black'
 

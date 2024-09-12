@@ -4,6 +4,7 @@ from math import sin, cos, atan2
 
 from alive import Alive
 from bullet import Bullet
+from inventory import Inventory
 from utils import *
 
 
@@ -18,6 +19,8 @@ class Player(Alive):
         self.atacked = False
 
         self.info_font = pygame.font.SysFont("Arial", 20)
+
+        self.inventory = Inventory()
 
     def controls(self, game):
         keys = pygame.key.get_pressed()
@@ -35,6 +38,8 @@ class Player(Alive):
             self.atack(game)
 
     def update(self, game):
+        self.inventory.update(game)
+
         self.atacked = False
         for entity in game.entities:
             if collision(self, entity):
@@ -60,5 +65,7 @@ class Player(Alive):
 
     def draw(self, screen):
         super().draw(screen)
+
+        self.inventory.draw(screen)
 
         screen.blit(self.info_font.render(f"Hp: {self.hp}", True, (0, 0, 0)), (10, 10))

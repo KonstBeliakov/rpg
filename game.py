@@ -22,8 +22,11 @@ class Game:
 
         self.bullets = []
 
+        self.events = []
+
     def update(self):
-        for event in pygame.event.get():
+        self.events = pygame.event.get()
+        for event in self.events:
             if event.type == pygame.QUIT:
                 self.over = True
         self.screen.fill((255, 255, 255))
