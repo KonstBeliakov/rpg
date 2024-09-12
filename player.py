@@ -59,7 +59,7 @@ class Player(Alive):
             direction = atan2(dy, dx)
             game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
                                               -self.bulletSpeed * sin(direction)),
-                                       team=PLAYER,
+                                       team=Team.PLAYER,
                                        pos=self.center))
             self.last_atacked = perf_counter()
 

@@ -16,7 +16,7 @@ class Game:
         self.over = False
 
         self.player = Player()
-        self.entities = [Alive(50, team=ENEMY) for _ in range(10)]
+        self.entities = [Alive(50, team=Team.ENEMY) for _ in range(10)]
         for entity in self.entities:
             entity.pos = (randrange(WIDTH), randrange(HEIGHT))
 

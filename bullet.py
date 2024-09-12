@@ -7,7 +7,7 @@ from utils import *
 
 
 class Bullet(Entity):
-    def __init__(self, speed, team=ENEMY, pos=(0, 0)):
+    def __init__(self, speed, team=Team.ENEMY, pos=(0, 0)):
         super().__init__(pos)
         self.size = (10, 10)
         self.speed = speed

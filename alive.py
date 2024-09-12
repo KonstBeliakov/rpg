@@ -4,7 +4,7 @@ from utils import *
 
 
 class Alive(Entity):
-    def __init__(self, hp, team=ENEMY, pos=(0, 0)):
+    def __init__(self, hp, team=Team.ENEMY, pos=(0, 0)):
         super().__init__(pos)
         self.max_hp = hp
         self.hp = hp

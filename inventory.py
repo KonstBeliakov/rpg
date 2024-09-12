@@ -1,10 +1,12 @@
 import pygame
 
 from entity import Entity
+from item import Item, Items, ItemsInfo
+from utils import *
 
 
 class Slot(Entity):
-    def __init__(self, inventory, number, pos=(0, 0), size=(50, 50)):
+    def __init__(self, inventory, number, pos=(0, 0), size=(64, 64)):
         super().__init__(pos, size)
         self.number = number
         self.inventory = inventory
@@ -37,11 +39,18 @@ class Slot(Entity):
             pygame.draw.rect(screen, self.outer_color, (self.x, self.y, self.sizeX, self.sizeY))
             pygame.draw.rect(screen, self.color, (self.x + 2, self.y + 2, self.sizeX - 4, self.sizeY - 4))
 
+        if not self.empty:
+            screen.blit(ItemsInfo[self.item.type].texture, self.pos)
+
 
 class Inventory:
     def __init__(self):
-        self.slots = [Slot(inventory=self, number=i, pos=(10 + i*55, 10)) for i in range(10)]
+        self.slots = [Slot(inventory=self, number=i, pos=(10 + i*70, 10)) for i in range(10)]
         self.selected = 0
+
+        self.slots[0].item = Item(item=Items.BOW, amount=1)
+        self.slots[1].item = Item(item=Items.SILVER_COIN, amount=2)
+        self.slots[2].item = Item(item=Items.COPPER_COIN, amount=5)
 
     def __iter__(self):
         yield from self.slots

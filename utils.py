@@ -1,8 +1,12 @@
+import enum
+
 from entity import Entity
 
-PLAYER = 1
-ENEMY = 2
-NEUTRAL = 3
+
+class Team(enum.Enum):
+    PLAYER = 1
+    ENEMY = 2
+    NEUTRAL = 3
 
 
 def collision(entity1: Entity, entity2: Entity):
