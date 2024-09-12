@@ -1,5 +1,9 @@
 from entity import Entity
 
+PLAYER = 1
+ENEMY = 2
+NEUTRAL = 3
+
 
 def collision(entity1: Entity, entity2: Entity):
     if entity1.x < entity2.x + entity2.sizeX and entity2.x < entity1.x + entity1.sizeX and \

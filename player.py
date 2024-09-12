@@ -2,15 +2,14 @@ import pygame
 from time import perf_counter
 from math import sin, cos, atan2
 
+from alive import Alive
 from bullet import Bullet
-from entity import Entity
-from utils import collision, dist
+from utils import *
 
 
-class Player(Entity):
+class Player(Alive):
     def __init__(self):
-        super().__init__()
-        self.hp = 100
+        super().__init__(hp=100)
 
         self.bulletSpeed = 300
         self.atack_delay = 1.3
@@ -19,10 +18,6 @@ class Player(Entity):
         self.atacked = False
 
         self.info_font = pygame.font.SysFont("Arial", 20)
-
-    @property
-    def alive(self):
-        return self.hp > 0
 
     def controls(self, game):
         keys = pygame.key.get_pressed()
@@ -59,6 +54,7 @@ class Player(Entity):
             direction = atan2(dy, dx)
             game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
                                               -self.bulletSpeed * sin(direction)),
+                                       team=PLAYER,
                                        pos=self.center))
             self.last_atacked = perf_counter()
 
