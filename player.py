@@ -43,7 +43,7 @@ class Player(Alive):
 
         self.atacked = False
         for entity in self.game.entities:
-            if collision(self, entity):
+            if collision(self, entity) and getattr(entity, 'team', None) == Team.ENEMY:
                 self.take_damege(1)
                 self.atacked = True
 

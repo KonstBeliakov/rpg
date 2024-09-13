@@ -3,6 +3,7 @@ from random import randrange
 
 from entity import Entity
 from monsters import *
+from shop import Shop
 from utils import *
 from player import Player
 from map import Map
@@ -15,7 +16,7 @@ class Game:
         self.over = False
 
         self.player = Player(self)
-        self.entities = [Slime(self) for _ in range(10)] + [Goblin(self) for _ in range(5)]
+        self.entities = [Slime(self) for _ in range(10)] + [Goblin(self) for _ in range(5)] + [Shop(self)]
         for entity in self.entities:
             entity.pos = (randrange(WINDOW_WIDTH), randrange(WINDOW_HEIGHT))
 
