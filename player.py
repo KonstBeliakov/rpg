@@ -39,7 +39,7 @@ class Player(Alive):
             self.atack(game)
 
     def update(self):
-        self.inventory.update(self.game)
+        self.inventory.update()
 
         self.atacked = False
         for entity in self.game.entities:

@@ -25,3 +25,7 @@ def dist(entity1, entity2):
     x1, y1 = entity1.center
     x2, y2 = entity2.center
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+
+
+def transform_price(price):
+    return f'{round(price / 100, 2)}G'
