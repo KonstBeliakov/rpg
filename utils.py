@@ -14,6 +14,13 @@ class Position(enum.Enum):
     RELATIVE_TO_PLAYER = 2
 
 
+class WeaponType(enum.Enum):
+    DEFAULT = 0
+    BOW = 1
+    CROSS_STAFF = 2
+    LIGHT_STAFF = 3
+
+
 def collision(entity1, entity2):
     if entity1.x < entity2.x + entity2.sizeX and entity2.x < entity1.x + entity1.sizeX and \
             entity1.y < entity2.y + entity2.sizeY and entity2.y < entity1.y + entity1.sizeY:

@@ -25,6 +25,8 @@ class Inventory:
         self.slots[3].item = Item(game, item=SMALL_HEALTH_POTION, amount=1)
         self.slots[4].item = Item(game, item=UPGRADED_BOW, amount=1)
         self.slots[5].item = Item(game, item=GOLD_BOW, amount=1)
+        self.slots[6].item = Item(game, item=CROSS_STAFF, amount=1)
+        self.slots[7].item = Item(game, item=UPGRADED_CROSS_STAFF, amount=1)
 
         self.opened = False
 

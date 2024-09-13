@@ -65,7 +65,6 @@ class Shop(Entity):
         self.buttons[n].command = lambda: self.trade(n)
 
     def trade(self, number):
-        print(f'Button {number} is pressed!')
         if self.game.player.inventory.remove(self.deals[number][0]):
             self.game.player.inventory.add(self.deals[number][1])
         else:

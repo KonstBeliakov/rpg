@@ -7,6 +7,7 @@ from bullet import Bullet
 from inventory import Inventory
 from progress_bar import ProgressBar
 from utils import *
+from item import *
 
 
 class Player(Alive):
@@ -58,18 +59,31 @@ class Player(Alive):
                 item.active = False
 
     def atack(self, game):
-        if perf_counter() - self.last_atacked > getattr(self.inventory.current_item, 'atack_delay', 0.5) and game.entities:
-            enemy = min(game.entities, key=lambda entity: dist(self, entity))
-            dx = self.center[0] - enemy.center[0]
-            dy = self.center[1] - enemy.center[1]
-            direction = atan2(dy, dx)
-            game.bullets.append(Bullet(game=self.game,
-                                       speed=(-self.bulletSpeed * cos(direction),
-                                              -self.bulletSpeed * sin(direction)),
-                                       team=Team.PLAYER,
-                                       pos=self.center,
-                                       damage=getattr(self.inventory.current_item, 'damage', 3)))
+        if perf_counter() - self.last_atacked > getattr(self.inventory.current_item, 'atack_delay', 0.5):
+            match getattr(ItemsInfo[getattr(self.inventory.current_item, 'type', NO_ITEM)], 'weapon_type', WeaponType.DEFAULT):
+                case WeaponType.BOW:
+                    if game.entities:
+                        enemy = min(game.entities, key=lambda entity: dist(self, entity))
+                        dx = self.center[0] - enemy.center[0]
+                        dy = self.center[1] - enemy.center[1]
+                        direction = atan2(dy, dx)
+                        bullet_speed = ItemsInfo[self.inventory.current_item.type].bullet_speed
+                        game.bullets.append(Bullet(game=self.game,
+                                                   speed=(-bullet_speed * cos(direction),
+                                                          -bullet_speed * sin(direction)),
+                                                   team=Team.PLAYER,
+                                                   pos=self.center,
+                                                   damage=self.inventory.current_item.damage))
+                case WeaponType.CROSS_STAFF:
+                    t = ItemsInfo[self.inventory.current_item.type].bullet_speed
+                    for bullet_speed in (0, t), (t, 0), (-t, 0), (0, -t):
+                        game.bullets.append(Bullet(game=self.game,
+                                                   speed=bullet_speed,
+                                                   team=Team.PLAYER,
+                                                   pos=self.center,
+                                                   damage=self.inventory.current_item.damage))
             self.last_atacked = perf_counter()
+
 
     def draw(self, screen):
         super().draw(screen)
