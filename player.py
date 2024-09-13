@@ -5,6 +5,7 @@ from math import sin, cos, atan2
 from alive import Alive
 from bullet import Bullet
 from inventory import Inventory
+from progress_bar import ProgressBar
 from utils import *
 
 
@@ -73,4 +74,6 @@ class Player(Alive):
 
         self.inventory.draw(screen)
 
-        screen.blit(self.info_font.render(f"Hp: {self.hp}", True, (0, 0, 0)), (10, 10))
+        ProgressBar(self.hp, self.max_hp, (10, 10), (300, 10), gradient=((50, 255, 50), (255, 50, 50)))(screen)
+        ProgressBar(perf_counter() - self.last_atacked, self.atack_delay, (10, 30), (100, 5),
+                    gradient=((255, 255, 50), (200, 200, 200)))(screen)

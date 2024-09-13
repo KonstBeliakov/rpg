@@ -4,6 +4,7 @@ from time import perf_counter
 import pygame
 
 from dropped_item import DroppedItem
+from progress_bar import ProgressBar
 from utils import *
 
 
@@ -44,13 +45,9 @@ class Alive(Entity):
         super().draw(screen)
 
         if self.alive:
-            hp_bar_size = self.sizeX
-
-            pygame.draw.rect(screen, (150, 150, 150), (self.x - 1, self.y - 11, hp_bar_size + 2, 7))
-            pygame.draw.rect(screen, (200, 200, 200), (self.x, self.y - 10, hp_bar_size, 5))
-
-            health_color = (255 * (1 - (max(0, self.hp) / self.max_hp)), 255 * (max(0, self.hp) / self.max_hp), 0)
-            pygame.draw.rect(screen, health_color, (self.x, self.y - 10, self.hp * hp_bar_size / self.max_hp, 5))
+            progress_bar = ProgressBar(self.hp, self.max_hp, (self.x, self.y - 10), (self.sizeX, 5),
+                                       gradient=((20, 255, 20), (255, 20, 20)))
+            progress_bar.draw(screen)
         else:
             self.color = tuple(list(self.color)[:3] + [255 * (max(0, 1 - (perf_counter() - self.death_time)))])
 
