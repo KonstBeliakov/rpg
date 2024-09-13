@@ -24,6 +24,9 @@ class Slot(Entity):
         return self.item is None
 
     def update(self):
+        if self.item is not None and self.item.amount <= 0:
+            self.item = None
+
         for event in self.game.events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 button_rect = pygame.Rect(self.pos, self.size)

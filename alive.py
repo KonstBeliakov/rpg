@@ -1,3 +1,4 @@
+from random import randint
 from time import perf_counter
 
 from dropped_item import DroppedItem
@@ -49,4 +50,4 @@ class Alive(Entity):
 
     def drop_items(self):
         for item in self.drop:
-            self.game.droped_items.append(DroppedItem(self.game, item, self.pos))
+            self.game.droped_items.append(DroppedItem(self.game, item, (self.x + randint(-15, 15), self.y + randint(-15,15))))

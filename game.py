@@ -15,7 +15,7 @@ class Game:
         self.over = False
 
         self.player = Player(self)
-        self.entities = [Slime(self, 50, team=Team.ENEMY) for _ in range(10)]
+        self.entities = [Slime(self) for _ in range(10)] + [Goblin(self) for _ in range(5)]
         for entity in self.entities:
             entity.pos = (randrange(WINDOW_WIDTH), randrange(WINDOW_HEIGHT))
 

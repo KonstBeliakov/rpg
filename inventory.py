@@ -18,9 +18,12 @@ class Inventory:
         self.font_size = 20
         self.font = pygame.font.SysFont("Arial", self.font_size)
 
-        self.slots[0].item = Item(item=BOW, amount=1)
-        self.slots[1].item = Item(item=SILVER_COIN, amount=2)
-        self.slots[2].item = Item(item=COPPER_COIN, amount=5)
+        self.slots[0].item = Item(game, item=BOW, amount=1)
+        self.slots[1].item = Item(game, item=SILVER_COIN, amount=2)
+        self.slots[2].item = Item(game, item=COPPER_COIN, amount=5)
+        self.slots[3].item = Item(game, item=SMALL_HEALTH_POTION, amount=1)
+        self.slots[4].item = Item(game, item=UPGRADED_BOW, amount=1)
+        self.slots[5].item = Item(game, item=GOLD_BOW, amount=1)
 
         self.opened = False
 
@@ -32,6 +35,10 @@ class Inventory:
 
     def __setitem__(self, key, value):
         self.slots[key] = value
+
+    @property
+    def current_item(self):
+        return self.slots[self.selected].item
 
     def clear(self):
         for slot in self:
@@ -50,6 +57,10 @@ class Inventory:
                     for i, slot in enumerate(self.slots):
                         slot.pos = (30 + (i % 7) * 70, 30 + 70 * (i // 7))
                 self.opened = not self.opened
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 3 and self.current_item is not None:
+                    self.current_item.use()
+
 
     def add(self, item):
         for slot in self.slots:
@@ -86,24 +97,25 @@ class Inventory:
             surface.fill((0, 0, 0, 128))
             screen.blit(surface, (30 + 70 * 7, 30))
 
-            screen.blit(ItemsInfo[self[self.selected].item.type].texture, (30 + 10 + 70 * 7, 30))
+            if not self[self.selected].empty:
+                screen.blit(ItemsInfo[self[self.selected].item.type].texture, (30 + 10 + 70 * 7, 30))
 
-            selected_item = self[self.selected].item
+                selected_item = self[self.selected].item
 
-            text_surface = self.font.render(str(selected_item), True, (0, 0, 0))
-            screen.blit(text_surface, (30 + 10 + 70 * 7, 30 + 50 + 20))
+                text_surface = self.font.render(str(selected_item), True, (0, 0, 0))
+                screen.blit(text_surface, (30 + 10 + 70 * 7, 30 + 50 + 20))
 
-            price = ItemsInfo[selected_item.type].price
-            text_surface2 = self.font.render(
-                f'Price: {transform_price(price * selected_item.amount)} ({transform_price(price)} per item)',
-                True, (0, 0, 0))
-            screen.blit(text_surface2, (30 + 10 + 70 * 7, 30 + 50 + 20 + 20))
+                price = ItemsInfo[selected_item.type].price
+                text_surface2 = self.font.render(
+                    f'Price: {transform_price(price * selected_item.amount)} ({transform_price(price)} per item)',
+                    True, (0, 0, 0))
+                screen.blit(text_surface2, (30 + 10 + 70 * 7, 30 + 50 + 20 + 20))
 
-            text_surface3 = self.font.render('Description', True, (0, 0, 0))
-            screen.blit(text_surface3, (30 + 10 + 70 * 7, 30 + 50 + 20 + 50))
+                text_surface3 = self.font.render('Description', True, (0, 0, 0))
+                screen.blit(text_surface3, (30 + 10 + 70 * 7, 30 + 50 + 20 + 50))
 
-            text_surface3 = self.font.render(ItemsInfo[selected_item.type].description, True, (0, 0, 0))
-            screen.blit(text_surface3, (30 + 10 + 70 * 7, 30 + 50 + 20 + 70))
+                text_surface3 = self.font.render(ItemsInfo[selected_item.type].description, True, (0, 0, 0))
+                screen.blit(text_surface3, (30 + 10 + 70 * 7, 30 + 50 + 20 + 70))
 
         for hint in self.hints:
             text_surface = self.font.render(hint[0], True, (0, 0, 0))

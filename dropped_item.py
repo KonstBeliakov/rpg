@@ -7,6 +7,8 @@ class DroppedItem(Entity):
     def __init__(self, game, item, pos=(0, 0)):
         super().__init__(game=game, pos=pos, size=(16, 16))
         self.item = item
+        if self.item.amount <= 0:
+            self.active = False
         self.texture = ItemsInfo[item.type].texture
 
     def update(self):
