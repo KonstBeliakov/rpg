@@ -9,7 +9,7 @@ class DroppedItem(Entity):
         self.item = item
         self.texture = ItemsInfo[item.type].texture
 
-    def update(self, game):
+    def update(self):
         if int(perf_counter() / 0.5) % 2:
             self.y += 0.15
         else:

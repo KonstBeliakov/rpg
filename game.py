@@ -4,7 +4,6 @@ from random import randrange
 from entity import Entity
 from monsters import *
 from utils import *
-from alive import Alive
 from player import Player
 from map import Map
 
@@ -42,19 +41,14 @@ class Game:
         self.map.draw(self.screen)
 
         for entity in chain(self.entities, self.bullets, self.droped_items):
-            entity.update(self)
+            entity.update()
             entity.draw(self.screen)
 
-        for i in range(len(self.entities) - 1, -1, -1):
-            if not self.entities[i].active:
-                self.entities[i].drop_items(self)
-                del self.entities[i]
-
-        self.delete_not_active(self.bullets)
-        self.delete_not_active(self.droped_items)
+        for i in self.entities, self.bullets, self.droped_items:
+            self.delete_not_active(i)
 
         self.player.controls(self)
-        self.player.update(self)
+        self.player.update()
         self.player.draw(self.screen)
 
         if not self.player.alive:

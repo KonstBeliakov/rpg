@@ -1,4 +1,3 @@
-import threading
 from time import perf_counter
 
 from dropped_item import DroppedItem
@@ -27,18 +26,15 @@ class Alive(Entity):
     def active(self, active):
         self.__active = active
 
+    def __del__(self):
+        self.drop_items()
+
     def take_damege(self, damage):
         if self.alive:
             self.hp -= damage
             if not self.alive:
                 self.color = tuple(list(self.color)[:3] + [255])
                 self.death_time = perf_counter()
-
-                def temp():
-                    self.active = False
-
-                t1 = threading.Timer(interval=0.7, function=temp)
-                self.active = False
 
     def draw(self, screen):
         super().draw(screen)
@@ -51,6 +47,6 @@ class Alive(Entity):
         else:
             self.color = tuple(list(self.color)[:3] + [255 * (max(0, 1 - (perf_counter() - self.death_time)))])
 
-    def drop_items(self, game):
+    def drop_items(self):
         for item in self.drop:
-            game.droped_items.append(DroppedItem(self.game, item, self.pos))
+            self.game.droped_items.append(DroppedItem(self.game, item, self.pos))

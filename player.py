@@ -38,11 +38,11 @@ class Player(Alive):
         if mouse_buttons[0] or mouse_buttons[1]:
             self.atack(game)
 
-    def update(self, game):
-        self.inventory.update(game)
+    def update(self):
+        self.inventory.update(self.game)
 
         self.atacked = False
-        for entity in game.entities:
+        for entity in self.game.entities:
             if collision(self, entity):
                 self.take_damege(1)
                 self.atacked = True
@@ -52,7 +52,7 @@ class Player(Alive):
         else:
             self.color = 'black'
 
-        for item in game.droped_items:
+        for item in self.game.droped_items:
             if collision(self, item):
                 self.inventory.add(item.item)
                 item.active = False

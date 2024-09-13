@@ -68,5 +68,5 @@ class Entity:
         else:
             screen.blit(self.__texture, self.screen_pos)
 
-    def update(self, game):
+    def update(self):
         pass
