@@ -1,12 +1,11 @@
 import pygame
 
-from entity import Entity
 
-
-class ProgressBar(Entity):
+class ProgressBar():
     def __init__(self, value=50, max_value=100, pos=(0, 0), size=(300, 5), color=(0, 255, 0), bg_color=(200, 200, 200),
                  outline_color=(150, 150, 150), gradient=None):
-        super().__init__(pos, size)
+        self.x, self.y = pos
+        self.sizeX, self.sizeY = size
         self.color = color
         self.bg_color = bg_color
         self.outline_color = outline_color

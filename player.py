@@ -10,8 +10,8 @@ from utils import *
 
 
 class Player(Alive):
-    def __init__(self):
-        super().__init__(hp=100)
+    def __init__(self, game):
+        super().__init__(game, hp=100)
 
         self.bulletSpeed = 300
         self.atack_delay = 0.7
@@ -21,7 +21,7 @@ class Player(Alive):
 
         self.info_font = pygame.font.SysFont("Arial", 20)
 
-        self.inventory = Inventory()
+        self.inventory = Inventory(self.game)
 
     def controls(self, game):
         keys = pygame.key.get_pressed()
@@ -63,7 +63,8 @@ class Player(Alive):
             dx = self.center[0] - enemy.center[0]
             dy = self.center[1] - enemy.center[1]
             direction = atan2(dy, dx)
-            game.bullets.append(Bullet(speed=(-self.bulletSpeed * cos(direction),
+            game.bullets.append(Bullet(game=self.game,
+                                       speed=(-self.bulletSpeed * cos(direction),
                                               -self.bulletSpeed * sin(direction)),
                                        team=Team.PLAYER,
                                        pos=self.center))

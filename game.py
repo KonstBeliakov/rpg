@@ -1,10 +1,12 @@
 from itertools import chain
 from random import randrange
 
+from entity import Entity
 from monsters import *
 from utils import *
 from alive import Alive
 from player import Player
+from map import Map
 
 
 class Game:
@@ -13,14 +15,16 @@ class Game:
 
         self.over = False
 
-        self.player = Player()
-        self.entities = [Slime(50, team=Team.ENEMY) for _ in range(10)]
+        self.player = Player(self)
+        self.entities = [Slime(self, 50, team=Team.ENEMY) for _ in range(10)]
         for entity in self.entities:
             entity.pos = (randrange(WINDOW_WIDTH), randrange(WINDOW_HEIGHT))
 
         self.bullets = []
         self.droped_items = []
         self.events = []
+
+        self.map = Map(self)
 
     @staticmethod
     def delete_not_active(lst: list[Entity]):
@@ -34,6 +38,8 @@ class Game:
             if event.type == pygame.QUIT:
                 self.over = True
         self.screen.fill((255, 255, 255))
+
+        self.map.draw(self.screen)
 
         for entity in chain(self.entities, self.bullets, self.droped_items):
             entity.update(self)

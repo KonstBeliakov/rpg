@@ -4,8 +4,8 @@ from item import *
 
 
 class DroppedItem(Entity):
-    def __init__(self, item, pos=(0, 0)):
-        super().__init__(pos=pos, size=(16, 16))
+    def __init__(self, game, item, pos=(0, 0)):
+        super().__init__(game=game, pos=pos, size=(16, 16))
         self.item = item
         self.texture = ItemsInfo[item.type].texture
 

@@ -1,16 +1,15 @@
 import threading
 from time import perf_counter
 
-import pygame
-
 from dropped_item import DroppedItem
+from entity import Entity
 from progress_bar import ProgressBar
 from utils import *
 
 
 class Alive(Entity):
-    def __init__(self, hp, team=Team.ENEMY, pos=(0, 0)):
-        super().__init__(pos)
+    def __init__(self,game, hp, team=Team.ENEMY, pos=(0, 0), size=(50, 50)):
+        super().__init__(game, pos=pos, size=size)
         self.max_hp = hp
         self.hp = hp
         self.team = team
@@ -45,7 +44,8 @@ class Alive(Entity):
         super().draw(screen)
 
         if self.alive:
-            progress_bar = ProgressBar(self.hp, self.max_hp, (self.x, self.y - 10), (self.sizeX, 5),
+            progress_bar = ProgressBar(self.hp, self.max_hp,
+                                       (self.screen_pos[0], self.screen_pos[1] - 10), (self.sizeX, 5),
                                        gradient=((20, 255, 20), (255, 20, 20)))
             progress_bar.draw(screen)
         else:
@@ -53,4 +53,4 @@ class Alive(Entity):
 
     def drop_items(self, game):
         for item in self.drop:
-            game.droped_items.append(DroppedItem(item, self.pos))
+            game.droped_items.append(DroppedItem(self.game, item, self.pos))

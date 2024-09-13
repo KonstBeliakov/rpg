@@ -1,8 +1,11 @@
 import pygame
+from utils import *
 
 
 class Entity:
-    def __init__(self, pos=(0, 0), size=(50, 50)):
+    def __init__(self, game, pos=(0, 0), size=(50, 50), position=Position.RELATIVE_TO_PLAYER):
+        self.game = game
+
         self.pos = pos
         self.size = size
 
@@ -10,6 +13,8 @@ class Entity:
 
         self.__active = True
         self.__texture = None
+
+        self.position = position
 
     @property
     def active(self):
@@ -26,6 +31,14 @@ class Entity:
     @pos.setter
     def pos(self, pos):
         self.x, self.y = pos
+
+    @property
+    def screen_pos(self):
+        if self.position == Position.CONSTANT:
+            return self.pos
+        else:
+            return (WINDOW_WIDTH // 2 + (self.x - self.game.player.pos[0]),
+                    WINDOW_HEIGHT // 2 + (self.y - self.game.player.pos[1]))
 
     @property
     def center(self):
@@ -47,14 +60,13 @@ class Entity:
     def texture(self, texture):
         self.__texture = pygame.transform.scale(texture, self.size)
 
-    def draw(self, screen):
+    def draw(self, screen, player_pos=(0, 0)):
         if self.__texture is None:
             surface = pygame.Surface(self.size, pygame.SRCALPHA)
             surface.fill(self.color)
-            screen.blit(surface, self.pos)
-
+            screen.blit(surface, self.screen_pos)
         else:
-            screen.blit(self.__texture, self.pos)
+            screen.blit(self.__texture, self.screen_pos)
 
     def update(self, game):
         pass

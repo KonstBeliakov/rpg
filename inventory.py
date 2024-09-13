@@ -8,8 +8,8 @@ from utils import *
 
 
 class Slot(Entity):
-    def __init__(self, inventory, number, pos=(0, 0), size=(64, 64)):
-        super().__init__(pos, size)
+    def __init__(self, game, inventory, number, pos=(0, 0), size=(64, 64), position=Position.CONSTANT):
+        super().__init__(game, pos=pos, size=size)
         self.number = number
         self.inventory = inventory
         self.item = None
@@ -46,8 +46,9 @@ class Slot(Entity):
 
 
 class Inventory:
-    def __init__(self):
-        self.slots = [Slot(inventory=self, number=i, pos=(10 + i * 70, WINDOW_HEIGHT - 80)) for i in range(10)]
+    def __init__(self, game):
+        self.game = game
+        self.slots = [Slot(game=self.game, inventory=self, number=i, pos=(10 + i * 70, WINDOW_HEIGHT - 80)) for i in range(10)]
         self.selected = 0
         self.hints = []
 

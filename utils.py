@@ -1,7 +1,5 @@
 import enum
 
-from entity import Entity
-
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 
 
@@ -11,14 +9,19 @@ class Team(enum.Enum):
     NEUTRAL = 3
 
 
-def collision(entity1: Entity, entity2: Entity):
+class Position(enum.Enum):
+    CONSTANT = 1
+    RELATIVE_TO_PLAYER = 2
+
+
+def collision(entity1, entity2):
     if entity1.x < entity2.x + entity2.sizeX and entity2.x < entity1.x + entity1.sizeX and \
             entity1.y < entity2.y + entity2.sizeY and entity2.y < entity1.y + entity1.sizeY:
         return True
     return False
 
 
-def dist(entity1: Entity, entity2: Entity):
+def dist(entity1, entity2):
     x1, y1 = entity1.center
     x2, y2 = entity2.center
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
