@@ -58,7 +58,7 @@ class Player(Alive):
                 item.active = False
 
     def atack(self, game):
-        if perf_counter() - self.last_atacked > self.inventory.current_item.atack_delay and game.entities:
+        if perf_counter() - self.last_atacked > getattr(self.inventory.current_item, 'atack_delay', 0.5) and game.entities:
             enemy = min(game.entities, key=lambda entity: dist(self, entity))
             dx = self.center[0] - enemy.center[0]
             dy = self.center[1] - enemy.center[1]
@@ -68,7 +68,7 @@ class Player(Alive):
                                               -self.bulletSpeed * sin(direction)),
                                        team=Team.PLAYER,
                                        pos=self.center,
-                                       damage=self.inventory.current_item.damage))
+                                       damage=getattr(self.inventory.current_item, 'damage', 3)))
             self.last_atacked = perf_counter()
 
     def draw(self, screen):

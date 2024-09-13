@@ -1,5 +1,5 @@
 from time import perf_counter
-
+import copy
 import pygame
 
 from entity import Entity
@@ -11,7 +11,8 @@ from slot import Slot
 class Inventory:
     def __init__(self, game):
         self.game = game
-        self.slots = [Slot(game=self.game, inventory=self, number=i, pos=(10 + i * 70, WINDOW_HEIGHT - 80)) for i in range(21)]
+        self.slots = [Slot(game=self.game, inventory=self, number=i, pos=(10 + i * 70, WINDOW_HEIGHT - 80)) for i in
+                      range(21)]
         self.selected = 0
         self.hints = []
 
@@ -19,8 +20,8 @@ class Inventory:
         self.font = pygame.font.SysFont("Arial", self.font_size)
 
         self.slots[0].item = Item(game, item=BOW, amount=1)
-        self.slots[1].item = Item(game, item=SILVER_COIN, amount=2)
-        self.slots[2].item = Item(game, item=COPPER_COIN, amount=5)
+        self.slots[1].item = Item(game, item=GOLD_COIN, amount=10)
+        self.slots[2].item = Item(game, item=COPPER_COIN, amount=1000)
         self.slots[3].item = Item(game, item=SMALL_HEALTH_POTION, amount=1)
         self.slots[4].item = Item(game, item=UPGRADED_BOW, amount=1)
         self.slots[5].item = Item(game, item=GOLD_BOW, amount=1)
@@ -61,7 +62,6 @@ class Inventory:
                 if event.button == 3 and self.current_item is not None:
                     self.current_item.use()
 
-
     def add(self, item):
         for slot in self.slots:
             if slot.item == item:
@@ -71,9 +71,16 @@ class Inventory:
         else:
             for slot in self.slots:
                 if slot.empty:
-                    slot.item = item
+                    slot.item = copy.copy(item)
                     self.hints.append([str(slot.item), perf_counter()])
                     break
+
+    def remove(self, item):
+        for slot in self.slots:
+            if slot.item == item and slot.item.amount >= item.amount:
+                slot.item.amount -= item.amount
+                return True
+        return False
 
     def select(self, n):
         self.selected = n
